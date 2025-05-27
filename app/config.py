@@ -8,7 +8,7 @@ class CONFIG:
     Configuration class for ASR models.
     Reads environment variables for runtime configuration, with sensible defaults.
     """
-    # Determine the ASR engine ('faster_whisper', 'openai_whisper' or 'whisperx')
+    # Determine the ASR engine ('faster_whisper', 'openai_whisper', 'whisperx' or 'sensevoice')
     ASR_ENGINE = os.getenv("ASR_ENGINE", "openai_whisper")
 
     # Retrieve Huggingface Token
@@ -24,6 +24,10 @@ class CONFIG:
 
     # Path to the model directory
     MODEL_PATH = os.getenv("ASR_MODEL_PATH", os.path.join(os.path.expanduser("~"), ".cache", "whisper"))
+
+    # SenseVoice specific configurations
+    SENSEVOICE_MODEL = os.getenv("SENSEVOICE_MODEL", "iic/SenseVoiceSmall")
+    SENSEVOICE_MODEL_REVISION = os.getenv("SENSEVOICE_MODEL_REVISION", "v1.0.0")
 
     # Model quantization level. Defines the precision for model weights:
     #   'float32' - 32-bit floating-point precision (higher precision, slower inference)

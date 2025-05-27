@@ -12,8 +12,8 @@ packages = [{ include = "app" }]
 whisper-asr-webservice = "app.webservice:start"
 
 [[tool.poetry.source]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu121"
 priority = "explicit"
 
 [tool.poetry.dependencies]
@@ -25,19 +25,21 @@ ffmpeg-python = "^0.2.0"
 numpy = "<2.0.0"
 openai-whisper = "^20240930"
 faster-whisper = "^1.1.0"
-whisperx = "^3.3.1"
+whisperx = "3.3.0"
 tqdm = "^4.67.1"
 llvmlite = "^0.44.0"
 numba = "^0.61.0"
+funasr = "1.2.6"
+modelscope = "^1.11.0"
 torch = [
-    { version = "2.6.0", source = "pypi", markers = "sys_platform == 'darwin'"},
-    { version = "2.6.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
-    { version = "2.6.0", source = "pytorch-cpu", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
+    { version = "2.2.0", source = "pypi", markers = "sys_platform == 'darwin'"},
+    { version = "2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
+    { version = "2.2.0", source = "pytorch", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
 ]
 torchaudio = [
-    { version = "2.6.0", source = "pypi", markers = "sys_platform == 'darwin'"},
-    { version = "2.6.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
-    { version = "2.6.0", source = "pytorch-cpu", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
+    { version = "2.2.0", source = "pypi", markers = "sys_platform == 'darwin'"},
+    { version = "2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
+    { version = "2.2.0", source = "pytorch", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
 ]
 
 [poetry.group.dev.dependencies]

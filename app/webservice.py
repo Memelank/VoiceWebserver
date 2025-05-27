@@ -69,7 +69,7 @@ async def asr(
     word_timestamps: bool = Query(
         default=False,
         description="Word level timestamps",
-        include_in_schema=(True if CONFIG.ASR_ENGINE == "faster_whisper" else False),
+        include_in_schema=(True if CONFIG.ASR_ENGINE in ["faster_whisper", "openai_whisper"] else False),
     ),
     diarize: bool = Query(
         default=False,
