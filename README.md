@@ -8,16 +8,29 @@ VoiceWebserver 是一个通用的语音工具包。基于[Whisper ASR Box](https
 ## 特性
 
 当前版本支持以下语音识别引擎：
-
+- [SenseVoice](https://github.com/iic/SenseVoice) - 支持中文语音识别（测试效果最佳默认使用）
 - [openai/whisper](https://github.com/openai/whisper)@[v20240930](https://github.com/openai/whisper/releases/tag/v20240930)
+<!-- 未测试：
 - [SYSTRAN/faster-whisper](https://github.com/SYSTRAN/faster-whisper)@[v1.1.0](https://github.com/SYSTRAN/faster-whisper/releases/tag/v1.1.0)
-- [whisperX](https://github.com/m-bain/whisperX)@[v3.3.0](https://github.com/m-bain/whisperX/releases/tag/v3.3.0)
-- [SenseVoice](https://github.com/iic/SenseVoice) - 支持中文语音识别
+- [whisperX](https://github.com/m-bain/whisperX)@[v3.3.0](https://github.com/m-bain/whisperX/releases/tag/v3.3.0) -->
 
 ## 快速开始
+需要安装python，可由windows自带微软商店搜索python3.12后安装。
+
+### 一键部署
+```shell
+1.安装依赖，只在首次运行前需要：
+点击install.bat，安装完成后配置PATH环境变量，参考https://blog.csdn.net/qq_34059233/article/details/128058750。
+如使用微软商店安装python，环境变量路径为：
+C:\Users/用户\用户名\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\Scripts
+（其中AppData为隐藏目录，需要显示隐藏文件）
+2.启动服务，当有GPU时默认使用GPU：
+点击SenseVoice.bat，启动服务
+3.打开浏览器访问http://localhost:9000，如测试页面正常即可配合transcription插件使用ASR功能。
+```
+
 
 ### 使用 Poetry 安装
-默认使用GPU
 ```shell
 # 安装 poetry（如果尚未安装）
 pip3 install poetry

@@ -1,88 +1,100 @@
+# ───────────────────────────────────────────────────────────────
+#        Whisper-ASR Webservice  ·  GPU 版 PyTorch (cu121)
+# ───────────────────────────────────────────────────────────────
+
 [tool.poetry]
-name = "whisper-asr-webservice"
-version = "1.9.0-dev"
+name        = "whisper-asr-webservice"
+version     = "1.9.0-dev"
 description = "Whisper ASR Webservice is a general-purpose speech recognition webservice."
-homepage = "https://github.com/ahmetoner/whisper-asr-webservice/"
-license = "https://github.com/ahmetoner/whisper-asr-webservice/blob/main/LICENCE"
-authors = ["Ahmet Öner", "Besim Alibegovic"]
-readme = "README.md"
-packages = [{ include = "app" }]
+homepage    = "https://github.com/ahmetoner/whisper-asr-webservice/"
+license     = "https://github.com/ahmetoner/whisper-asr-webservice/blob/main/LICENCE"
+authors     = ["Ahmet Öner", "Besim Alibegovic"]
+readme      = "README.md"
+packages    = [{ include = "app" }]
 
 [tool.poetry.scripts]
 whisper-asr-webservice = "app.webservice:start"
 
+# ─── 依赖源 ──────────────────────────────────────────────────────
+# 1) 国内 SJTUG CUDA-12.1 镜像（优先）
 [[tool.poetry.source]]
-name = "pytorch"
-url = "https://download.pytorch.org/whl/cu121"
+name     = "pytorch-cn"
+url      = "https://mirror.sjtu.edu.cn/pytorch-wheels/cu121"
 priority = "explicit"
 
+# 2) 官方 download.pytorch.org（备用）
+[[tool.poetry.source]]
+name     = "pytorch"
+url      = "https://download.pytorch.org/whl/cu121"
+priority = "supplemental"
+
+# ─── 项目依赖 ───────────────────────────────────────────────────
 [tool.poetry.dependencies]
-python = "<3.13,>=3.10"
-fastapi = "^0.115.8"
-uvicorn = { extras = ["standard"], version = "^0.34.0" }
-python-multipart = "^0.0.20"
-ffmpeg-python = "^0.2.0"
-numpy = "<2.0.0"
-openai-whisper = "^20240930"
-faster-whisper = "^1.1.0"
-whisperx = "3.3.0"
-tqdm = "^4.67.1"
-llvmlite = "^0.44.0"
-numba = "^0.61.0"
-funasr = "1.2.6"
-modelscope = "^1.11.0"
+python            = "<3.13,>=3.10"
+fastapi           = "^0.115.8"
+uvicorn           = { extras = ["standard"], version = "^0.34.0" }
+python-multipart  = "^0.0.20"
+ffmpeg-python     = "^0.2.0"
+numpy             = "<2.0.0"
+openai-whisper    = "^20240930"
+faster-whisper    = "^1.1.0"
+whisperx          = "3.3.0"
+tqdm              = "^4.67.1"
+llvmlite          = "^0.44.0"
+numba             = "^0.61.0"
+funasr            = "1.2.6"
+modelscope        = "^1.11.0"
+
+# ---------- PyTorch / Torchaudio 分平台锁定 ----------
 torch = [
-    { version = "2.2.0", source = "pypi", markers = "sys_platform == 'darwin'"},
-    { version = "2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
-    { version = "2.2.0", source = "pytorch", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
-]
-torchaudio = [
-    { version = "2.2.0", source = "pypi", markers = "sys_platform == 'darwin'"},
-    { version = "2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and sys_platform != 'darwin'"},
-    { version = "2.2.0", source = "pytorch", markers = "platform_machine == 'x86_64' and sys_platform != 'darwin'" },
+  # macOS（CPU/MPS）
+  { version = "==2.2.0", source = "pypi", markers = "platform_system == 'Darwin'" },
+
+  # Linux ARM64（Jetson/RPi 等）— CPU 轮子
+  { version = "==2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and platform_system != 'Darwin'" },
+
+  # Windows x86-64 (AMD64) — GPU 2.3.1+cu121
+  { version = "==2.2.0", source = "pytorch-cn", markers = "platform_system == 'Windows' and platform_machine == 'AMD64'" },
+
+  # Linux x86-64 — GPU 2.3.1+cu121
+  { version = "==2.2.0", source = "pytorch-cn", markers = "platform_system == 'Linux' and platform_machine == 'x86_64'" }
 ]
 
+torchaudio = [
+  { version = "==2.2.0", source = "pypi", markers = "platform_system == 'Darwin'" },
+  { version = "==2.2.0", source = "pypi", markers = "platform_machine == 'aarch64' and platform_system != 'Darwin'" },
+  { version = "==2.2.0", source = "pytorch-cn", markers = "platform_system == 'Windows' and platform_machine == 'AMD64'" },
+  { version = "==2.2.0", source = "pytorch-cn", markers = "platform_system == 'Linux'  and platform_machine == 'x86_64'" }
+]
+
+# ─── 开发依赖 ────────────────────────────────────────────────────
 [poetry.group.dev.dependencies]
-pytest = "^8.3.4"
-ruff = "^0.9.6"
-black = "^25.1.0"
-mkdocs-material = "^9.6.4"
+pytest             = "^8.3.4"
+ruff               = "^0.9.6"
+black              = "^25.1.0"
+mkdocs-material    = "^9.6.4"
 pymdown-extensions = "^10.14.3"
 
+# ─── 构建后端 ───────────────────────────────────────────────────
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires      = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+# ─── 格式化 / Lint 配置（保持原样）──────────────────────────────
 [tool.black]
 skip-string-normalization = true
-line-length = 120
+line-length               = 120
 
 [tool.ruff]
 line-length = 120
 
 [tool.ruff.lint]
-select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "C",  # flake8-comprehensions
-    "B",  # flake8-bugbear
-]
-ignore = [
-    "E501",  # line too long, handled by black
-    "C901",  # too complex
-]
+select = ["E","W","F","I","C","B"]
+ignore = ["E501","C901"]
 
 [tool.ruff.lint.isort]
-order-by-type = true
+order-by-type          = true
 relative-imports-order = "closest-to-furthest"
 extra-standard-library = ["typing"]
-section-order = [
-    "future",
-    "standard-library",
-    "third-party",
-    "first-party",
-    "local-folder",
-]
-known-first-party = []
+section-order          = ["future","standard-library","third-party","first-party","local-folder"]
+known-first-party      = []

@@ -1,11 +1,5 @@
-::CALL "D:\BianCheng\Anaconda\Scripts\activate.bat"
-::CALL conda activate VoiceWebserver-main
-
 @SET ASR_ENGINE=sensevoice
-::@SET ASR_ENGINE=openai_whisper
-::@SET ASR_ENGINE=faster_whisper
-::@SET ASR_ENGINE=whisperx
-::@SET ASR_DEVICE=cuda
+@SET ASR_DEVICE=cuda
 
 poetry run whisper-asr-webservice --host 0.0.0.0 --port 9000
 
